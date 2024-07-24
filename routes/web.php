@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/todo', [TodoController::class, 'index']);
+Route::post('/todo', [TodoController::class, 'store']);
