@@ -30,6 +30,9 @@ class TodoController extends Controller
     {
         $request->validate([
             'task' => 'required|min:3'
+        ], [
+            'task.required' => 'Isian task wajib diisikan',
+            'task.min' => 'Minimal isian untuk task adalah 3 karakter',
         ]);
     }
 
