@@ -82,11 +82,20 @@
                             @foreach ($data as $item)
                                 <!-- 04. Display Data -->
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="task-text">{{ $item->task }}</span>
+                                    <span class="task-text">
+                                        {!! $item->is_done == '1' ? '<del>' : '' !!}
+                                        {{ $item->task }}
+                                        {!! $item->is_done == '1' ? '</del>' : '' !!}
+                                    </span>
                                     <input type="text" class="form-control edit-input" style="display: none;"
                                         value="{{ $item->task }}">
                                     <div class="btn-group">
-                                        <button class="btn btn-danger btn-sm delete-btn">✕</button>
+                                        <form action="{{ route('todo.delete', ['id' => $item->id]) }}" method="POST"
+                                            onsubmit="return confirm('Yakin akan menghapus data ini?')">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-danger btn-sm delete-btn">✕</button>
+                                        </form>
                                         <button class="btn btn-primary btn-sm edit-btn" data-bs-toggle="collapse"
                                             data-bs-target="#collapse-{{ $loop->index }}"
                                             aria-expanded="false">✎</button>
@@ -94,12 +103,14 @@
                                 </li>
                                 <!-- 05. Update Data -->
                                 <li class="list-group-item collapse" id="collapse-{{ $loop->index }}">
-                                    <form action="" method="POST">
+                                    <form action="{{ route('todo.update', ['id' => $item->id]) }}" method="POST">
+                                        @csrf
+                                        @method('put')
                                         <div>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" name="task"
                                                     value="{{ $item->task }}">
-                                                <button class="btn btn-outline-primary" type="button">Update</button>
+                                                <button class="btn btn-outline-primary" type="submit">Update</button>
                                             </div>
                                         </div>
                                         <div class="d-flex">
